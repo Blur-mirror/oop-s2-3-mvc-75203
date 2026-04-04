@@ -20,7 +20,7 @@ public class StudentController : Controller
 
     public StudentController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
-        _db          = db;
+        _db = db;
         _userManager = userManager;
     }
 
@@ -77,15 +77,19 @@ public class StudentController : Controller
         var existing = await GetMyProfileAsync();
         if (existing == null) return NotFound();
 
-        // Clear nav-property model state errors
+        // Remove ALL fields that aren't user-editable from validation
+        // IdentityUserId is [Required] on the model but we always take it from the
+        // server-side existing record — never trust what the form posts for it
+        ModelState.Remove(nameof(StudentProfile.IdentityUserId));
         ModelState.Remove(nameof(StudentProfile.IdentityUser));
+        ModelState.Remove(nameof(StudentProfile.StudentNumber));
         ModelState.Remove(nameof(StudentProfile.Enrolments));
         ModelState.Remove(nameof(StudentProfile.AssignmentResults));
         ModelState.Remove(nameof(StudentProfile.ExamResults));
 
         if (!ModelState.IsValid) return View(model);
 
-        // Copy editable fields only — Id, IdentityUserId, StudentNumber are immutable
+        // Always write from server-side existing record — never from posted model
         existing.Name = model.Name;
         existing.Email = model.Email;
         existing.Phone = model.Phone;
@@ -161,14 +165,14 @@ public class StudentController : Controller
         // Build view models that redact scores for unreleased exams
         var vms = results.Select(er => new StudentExamResultViewModel
         {
-            ExamTitle     = er.Exam.Title,
-            CourseName    = er.Exam.Course.Name,
-            ExamDate      = er.Exam.Date,
-            MaxScore      = er.Exam.MaxScore,
+            ExamTitle = er.Exam.Title,
+            CourseName = er.Exam.Course.Name,
+            ExamDate = er.Exam.Date,
+            MaxScore = er.Exam.MaxScore,
             // Server-side gate: only expose score & grade when released
-            Score         = er.Exam.ResultsReleased ? er.Score : null,
-            Grade         = er.Exam.ResultsReleased ? er.Grade : null,
-            IsReleased    = er.Exam.ResultsReleased
+            Score = er.Exam.ResultsReleased ? er.Score : null,
+            Grade = er.Exam.ResultsReleased ? er.Grade : null,
+            IsReleased = er.Exam.ResultsReleased
         }).ToList();
 
         return View(vms);
@@ -188,11 +192,11 @@ public class StudentDashboardViewModel
 /// </summary>
 public class StudentExamResultViewModel
 {
-    public string   ExamTitle  { get; set; } = string.Empty;
-    public string   CourseName { get; set; } = string.Empty;
-    public DateTime ExamDate   { get; set; }
-    public decimal  MaxScore   { get; set; }
-    public decimal? Score      { get; set; }  // null = provisional
-    public string?  Grade      { get; set; }  // null = provisional
-    public bool     IsReleased { get; set; }
+    public string ExamTitle { get; set; } = string.Empty;
+    public string CourseName { get; set; } = string.Empty;
+    public DateTime ExamDate { get; set; }
+    public decimal MaxScore { get; set; }
+    public decimal? Score { get; set; }  // null = provisional
+    public string? Grade { get; set; }  // null = provisional
+    public bool IsReleased { get; set; }
 }

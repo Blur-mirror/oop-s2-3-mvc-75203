@@ -198,26 +198,23 @@ public class AdminController : Controller
     {
         if (id != model.Id) return BadRequest();
 
-        // Load the tracked entity — never call _db.Update() on a form-posted model
-        // because nav properties will be null and EF will try to clear relationships
         var existing = await _db.StudentProfiles.FindAsync(id);
         if (existing == null) return NotFound();
 
-        // Clear nav-property model state errors — they are never posted from a form
+        ModelState.Remove(nameof(StudentProfile.IdentityUserId));
         ModelState.Remove(nameof(StudentProfile.IdentityUser));
+        ModelState.Remove(nameof(StudentProfile.StudentNumber));
         ModelState.Remove(nameof(StudentProfile.Enrolments));
         ModelState.Remove(nameof(StudentProfile.AssignmentResults));
         ModelState.Remove(nameof(StudentProfile.ExamResults));
 
         if (!ModelState.IsValid) return View(model);
 
-        // Copy only the editable fields onto the tracked entity
         existing.Name = model.Name;
         existing.Email = model.Email;
         existing.Phone = model.Phone;
         existing.Address = model.Address;
         existing.DateOfBirth = model.DateOfBirth;
-        // Never overwrite IdentityUserId or StudentNumber from form input
 
         await _db.SaveChangesAsync();
         TempData["Success"] = "Student profile updated.";
