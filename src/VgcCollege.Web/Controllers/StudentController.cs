@@ -77,27 +77,25 @@ public class StudentController : Controller
         var existing = await GetMyProfileAsync();
         if (existing == null) return NotFound();
 
-        // Never allow id or student number to be altered via the form
-        model.Id             = existing.Id;
-        model.IdentityUserId = existing.IdentityUserId;
-        model.StudentNumber  = existing.StudentNumber;
-
-        // Clear nav-property model state errors – these are never posted from a form
+        // Clear nav-property model state errors
         ModelState.Remove(nameof(StudentProfile.IdentityUser));
+        ModelState.Remove(nameof(StudentProfile.Enrolments));
+        ModelState.Remove(nameof(StudentProfile.AssignmentResults));
+        ModelState.Remove(nameof(StudentProfile.ExamResults));
 
         if (!ModelState.IsValid) return View(model);
 
-        existing.Name        = model.Name;
-        existing.Email       = model.Email;
-        existing.Phone       = model.Phone;
-        existing.Address     = model.Address;
+        // Copy editable fields only — Id, IdentityUserId, StudentNumber are immutable
+        existing.Name = model.Name;
+        existing.Email = model.Email;
+        existing.Phone = model.Phone;
+        existing.Address = model.Address;
         existing.DateOfBirth = model.DateOfBirth;
 
         await _db.SaveChangesAsync();
         TempData["Success"] = "Profile updated.";
         return RedirectToAction(nameof(Profile));
     }
-
     // ═══════════════════════════════════════════════════════════════════════════
     // My enrolments + attendance
     // ═══════════════════════════════════════════════════════════════════════════
