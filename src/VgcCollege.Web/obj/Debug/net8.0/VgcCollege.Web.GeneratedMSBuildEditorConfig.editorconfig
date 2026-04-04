@@ -18,8 +18,140 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web
 build_property._RazorSourceGeneratorDebug = 
 
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Areas/Identity/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Areas/Identity/Pages/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = QXJlYXMvSWRlbnRpdHkvUGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/AssignFaculty.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQXNzaWduRmFjdWx0eS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Assignments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQXNzaWdubWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Branches.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQnJhbmNoZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Courses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ291cnNlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/CreateAssignment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlQXNzaWdubWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/CreateBranch.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlQnJhbmNoLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/CreateCourse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlQ291cnNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/CreateEnrolment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlRW5yb2xtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/CreateExam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQ3JlYXRlRXhhbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/EditAssignment.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdEFzc2lnbm1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/EditBranch.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdEJyYW5jaC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/EditCourse.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdENvdXJzZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/EditExam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdEV4YW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/EditStudent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRWRpdFN0dWRlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Enrolments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRW5yb2xtZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Exams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRXhhbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Faculty.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vRmFjdWx0eS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/StudentDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vU3R1ZGVudERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Admin/Students.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vU3R1ZGVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/AddExamResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9BZGRFeGFtUmVzdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/AddResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9BZGRSZXN1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/Attendance.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9BdHRlbmRhbmNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/CourseStudents.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9Db3Vyc2VTdHVkZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/EditExamResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9FZGl0RXhhbVJlc3VsdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/EditResult.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9FZGl0UmVzdWx0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/ExamResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9FeGFtUmVzdWx0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/Gradebook.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9HcmFkZWJvb2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/MyCourses.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9NeUNvdXJzZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Faculty/StudentContacts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRmFjdWx0eS9TdHVkZW50Q29udGFjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9FcnJvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Home/Index.cshtml]
@@ -40,6 +172,30 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/EditProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FZGl0UHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/ExamResults.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9FeGFtUmVzdWx0cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/Gradebook.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9HcmFkZWJvb2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/MyEnrolments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9NeUVucm9sbWVudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/Student/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU3R1ZGVudC9Qcm9maWxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/velvet_logic/Desktop/Coding/C\#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/Views/_ViewImports.cshtml]

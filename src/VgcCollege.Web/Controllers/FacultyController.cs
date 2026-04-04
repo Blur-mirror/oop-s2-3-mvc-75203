@@ -8,10 +8,11 @@ using VgcCollege.Web.Models;
 
 namespace VgcCollege.Web.Controllers;
 
-
-/// Faculty-only controller. Server-side query filtering ensures faculty
-/// can only see students enrolled in their assigned courses.
-/// Contact details are further restricted to courses where their role is "Tutor".
+/// <summary>
+/// Faculty-only controller.
+/// All queries are filtered server-side to this faculty member's courses only.
+/// Contact details are further restricted to "Tutor"-role courses.
+/// </summary>
 [Authorize(Roles = "Faculty")]
 public class FacultyController : Controller
 {
@@ -20,11 +21,12 @@ public class FacultyController : Controller
 
     public FacultyController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
-        _db          = db;
+        _db = db;
         _userManager = userManager;
     }
 
-    //Helper: resolve the current faculty profile
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
     private async Task<FacultyProfile?> GetCurrentFacultyAsync()
     {
         var userId = _userManager.GetUserId(User);
@@ -33,7 +35,7 @@ public class FacultyController : Controller
             .FirstOrDefaultAsync(f => f.IdentityUserId == userId);
     }
 
-    //Helper: IDs of courses this faculty member teaches
+    /// <summary>Returns IDs of all courses this faculty member teaches.</summary>
     private async Task<List<int>> GetMyCourseIdsAsync()
     {
         var userId = _userManager.GetUserId(User);
@@ -43,7 +45,10 @@ public class FacultyController : Controller
             .ToListAsync();
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
     // Dashboard
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Index()
     {
         var faculty = await GetCurrentFacultyAsync();
@@ -59,6 +64,7 @@ public class FacultyController : Controller
                 .Include(c => c.Branch)
                 .Include(c => c.Enrolments)
                 .ToListAsync(),
+            // Recent results scoped to this faculty's courses
             RecentResults = await _db.AssignmentResults
                 .Where(ar => courseIds.Contains(ar.Assignment.CourseId))
                 .Include(ar => ar.Assignment)
@@ -67,12 +73,13 @@ public class FacultyController : Controller
                 .Take(5)
                 .ToListAsync()
         };
-
         return View(vm);
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Courses & Students
+    // ═══════════════════════════════════════════════════════════════════════════
 
-    // My courses + students
     public async Task<IActionResult> MyCourses()
     {
         var courseIds = await GetMyCourseIdsAsync();
@@ -85,14 +92,14 @@ public class FacultyController : Controller
         return View(courses);
     }
 
-
+    /// <summary>
     /// Lists students enrolled in a specific course taught by this faculty.
-    /// Server-side: verifies the course actually belongs to this faculty member.
+    /// Returns 403 if the course isn't theirs.
+    /// </summary>
     public async Task<IActionResult> CourseStudents(int courseId)
     {
         var courseIds = await GetMyCourseIdsAsync();
-        if (!courseIds.Contains(courseId))
-            return Forbid(); // 403 – not their course
+        if (!courseIds.Contains(courseId)) return Forbid();
 
         var course = await _db.Courses
             .Include(c => c.Branch)
@@ -104,21 +111,23 @@ public class FacultyController : Controller
         return View(course);
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Student contact details (Tutor role only)
+    // ═══════════════════════════════════════════════════════════════════════════
 
-    // Student contact details (Tutor only)
+    /// <summary>
     /// Shows contact details ONLY for students in courses where this faculty
-    /// has the "Tutor" role. Server-side enforced – not just hidden in UI.
+    /// has the "Tutor" role. Server-side enforced.
+    /// </summary>
     public async Task<IActionResult> StudentContacts()
     {
         var userId = _userManager.GetUserId(User);
 
-        // Get courses where this faculty is a tutor
         var tutorCourseIds = await _db.FacultyCourseAssignments
             .Where(fca => fca.FacultyProfile.IdentityUserId == userId && fca.Role == "Tutor")
             .Select(fca => fca.CourseId)
             .ToListAsync();
 
-        // Students enrolled in those courses
         var students = await _db.StudentProfiles
             .Where(sp => sp.Enrolments.Any(e => tutorCourseIds.Contains(e.CourseId)))
             .Include(sp => sp.Enrolments).ThenInclude(e => e.Course)
@@ -129,13 +138,14 @@ public class FacultyController : Controller
         return View(students);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Gradebook (assignment results)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Gradebook(int? courseId)
     {
         var courseIds = await GetMyCourseIdsAsync();
 
-        // If a specific course is requested, verify access
         if (courseId.HasValue && !courseIds.Contains(courseId.Value))
             return Forbid();
 
@@ -150,7 +160,6 @@ public class FacultyController : Controller
             .ThenBy(ar => ar.StudentProfile.Name)
             .ToListAsync();
 
-        // Populate course filter dropdown (only this faculty's courses)
         var myCourses = await _db.Courses
             .Where(c => courseIds.Contains(c.Id))
             .OrderBy(c => c.Name)
@@ -165,7 +174,8 @@ public class FacultyController : Controller
     {
         var courseIds = await GetMyCourseIdsAsync();
         await PopulateAssignmentSelectList(courseIds, assignmentId);
-        await PopulateStudentSelectList(courseIds);
+        // FIX: scope students to only those enrolled in this faculty's courses
+        await PopulateStudentSelectListForCourses(courseIds);
         return View(new AssignmentResult());
     }
 
@@ -174,25 +184,33 @@ public class FacultyController : Controller
     {
         var courseIds = await GetMyCourseIdsAsync();
 
-        // Verify the assignment belongs to this faculty's course
         var assignment = await _db.Assignments.FindAsync(model.AssignmentId);
         if (assignment == null || !courseIds.Contains(assignment.CourseId))
             return Forbid();
 
-        // Verify score does not exceed max
-        if (model.Score > assignment.MaxScore)
-            ModelState.AddModelError("Score", $"Score cannot exceed max score of {assignment.MaxScore}.");
+        // Round score to 2dp immediately so we never store long decimals
+        model.Score = Math.Round(model.Score, 2);
 
-        // Check for duplicate
+        if (model.Score > assignment.MaxScore)
+            ModelState.AddModelError("Score", $"Score cannot exceed the max of {assignment.MaxScore}.");
+
         bool exists = await _db.AssignmentResults
-            .AnyAsync(ar => ar.AssignmentId == model.AssignmentId && ar.StudentProfileId == model.StudentProfileId);
+            .AnyAsync(ar => ar.AssignmentId == model.AssignmentId
+                         && ar.StudentProfileId == model.StudentProfileId);
         if (exists)
-            ModelState.AddModelError("", "A result for this student and assignment already exists. Use Edit instead.");
+            ModelState.AddModelError("", "A result for this student already exists. Use Edit instead.");
+
+        // FIX: verify the student is actually enrolled in this assignment's course
+        bool studentEnrolled = await _db.CourseEnrolments
+            .AnyAsync(e => e.StudentProfileId == model.StudentProfileId
+                        && e.CourseId == assignment.CourseId);
+        if (!studentEnrolled)
+            ModelState.AddModelError("StudentProfileId", "This student is not enrolled in the assignment's course.");
 
         if (!ModelState.IsValid)
         {
             await PopulateAssignmentSelectList(courseIds, model.AssignmentId);
-            await PopulateStudentSelectList(courseIds, model.StudentProfileId);
+            await PopulateStudentSelectListForCourses(courseIds);
             return View(model);
         }
 
@@ -210,7 +228,6 @@ public class FacultyController : Controller
             .FirstOrDefaultAsync(r => r.Id == id);
         if (result == null) return NotFound();
 
-        // Verify this result belongs to a course this faculty teaches
         var courseIds = await GetMyCourseIdsAsync();
         if (!courseIds.Contains(result.Assignment.CourseId)) return Forbid();
 
@@ -230,13 +247,17 @@ public class FacultyController : Controller
         var courseIds = await GetMyCourseIdsAsync();
         if (!courseIds.Contains(existing.Assignment.CourseId)) return Forbid();
 
+        // Round to 2dp
+        model.Score = Math.Round(model.Score, 2);
+
         if (model.Score > existing.Assignment.MaxScore)
             ModelState.AddModelError("Score", $"Score cannot exceed {existing.Assignment.MaxScore}.");
 
         if (!ModelState.IsValid)
         {
-            model.Assignment      = existing.Assignment;
-            model.StudentProfile  = await _db.StudentProfiles.FindAsync(existing.StudentProfileId) ?? new StudentProfile();
+            model.Assignment     = existing.Assignment;
+            model.StudentProfile = await _db.StudentProfiles.FindAsync(existing.StudentProfileId)
+                                   ?? new StudentProfile();
             return View(model);
         }
 
@@ -247,8 +268,10 @@ public class FacultyController : Controller
         return RedirectToAction(nameof(Gradebook));
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Exam Results
+    // ═══════════════════════════════════════════════════════════════════════════
 
-    // Exam results
     public async Task<IActionResult> ExamResults(int? examId)
     {
         var courseIds = await GetMyCourseIdsAsync();
@@ -280,7 +303,7 @@ public class FacultyController : Controller
     {
         var courseIds = await GetMyCourseIdsAsync();
         await PopulateExamSelectList(courseIds, examId);
-        await PopulateStudentSelectList(courseIds);
+        await PopulateStudentSelectListForCourses(courseIds);
         return View(new ExamResult());
     }
 
@@ -291,22 +314,30 @@ public class FacultyController : Controller
         var exam = await _db.Exams.FindAsync(model.ExamId);
         if (exam == null || !courseIds.Contains(exam.CourseId)) return Forbid();
 
+        model.Score = Math.Round(model.Score, 2);
+
         if (model.Score > exam.MaxScore)
             ModelState.AddModelError("Score", $"Score cannot exceed {exam.MaxScore}.");
 
         bool exists = await _db.ExamResults
-            .AnyAsync(er => er.ExamId == model.ExamId && er.StudentProfileId == model.StudentProfileId);
+            .AnyAsync(er => er.ExamId == model.ExamId
+                         && er.StudentProfileId == model.StudentProfileId);
         if (exists)
-            ModelState.AddModelError("", "A result for this student and exam already exists.");
+            ModelState.AddModelError("", "A result for this student already exists.");
+
+        bool studentEnrolled = await _db.CourseEnrolments
+            .AnyAsync(e => e.StudentProfileId == model.StudentProfileId
+                        && e.CourseId == exam.CourseId);
+        if (!studentEnrolled)
+            ModelState.AddModelError("StudentProfileId", "This student is not enrolled in the exam's course.");
 
         if (!ModelState.IsValid)
         {
             await PopulateExamSelectList(courseIds, model.ExamId);
-            await PopulateStudentSelectList(courseIds, model.StudentProfileId);
+            await PopulateStudentSelectListForCourses(courseIds);
             return View(model);
         }
 
-        // Auto-calculate grade from score
         model.Grade = ExamResult.CalculateGrade(model.Score, exam.MaxScore);
         _db.ExamResults.Add(model);
         await _db.SaveChangesAsync();
@@ -341,13 +372,16 @@ public class FacultyController : Controller
         var courseIds = await GetMyCourseIdsAsync();
         if (!courseIds.Contains(existing.Exam.CourseId)) return Forbid();
 
+        model.Score = Math.Round(model.Score, 2);
+
         if (model.Score > existing.Exam.MaxScore)
             ModelState.AddModelError("Score", $"Score cannot exceed {existing.Exam.MaxScore}.");
 
         if (!ModelState.IsValid)
         {
             model.Exam           = existing.Exam;
-            model.StudentProfile = await _db.StudentProfiles.FindAsync(existing.StudentProfileId) ?? new StudentProfile();
+            model.StudentProfile = await _db.StudentProfiles.FindAsync(existing.StudentProfileId)
+                                   ?? new StudentProfile();
             return View(model);
         }
 
@@ -358,19 +392,20 @@ public class FacultyController : Controller
         return RedirectToAction(nameof(ExamResults));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Attendance
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Attendance(int enrolmentId)
     {
         var enrolment = await _db.CourseEnrolments
             .Include(e => e.StudentProfile)
             .Include(e => e.Course)
-            .Include(e => e.AttendanceRecords)
+            .Include(e => e.AttendanceRecords.OrderBy(a => a.WeekNumber))
             .FirstOrDefaultAsync(e => e.Id == enrolmentId);
 
         if (enrolment == null) return NotFound();
 
-        // Verify this is this faculty's course
         var courseIds = await GetMyCourseIdsAsync();
         if (!courseIds.Contains(enrolment.CourseId)) return Forbid();
 
@@ -378,7 +413,8 @@ public class FacultyController : Controller
     }
 
     [HttpPost, ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddAttendance(int enrolmentId, int weekNumber, DateTime sessionDate, bool present)
+    public async Task<IActionResult> AddAttendance(int enrolmentId, int weekNumber,
+        DateTime sessionDate, bool present)
     {
         var enrolment = await _db.CourseEnrolments.FindAsync(enrolmentId);
         if (enrolment == null) return NotFound();
@@ -386,10 +422,10 @@ public class FacultyController : Controller
         var courseIds = await GetMyCourseIdsAsync();
         if (!courseIds.Contains(enrolment.CourseId)) return Forbid();
 
-        // Upsert: update existing week or add new
+        // Upsert: update existing week record or add new one
         var existing = await _db.AttendanceRecords
-            .FirstOrDefaultAsync(ar => ar.CourseEnrolmentId == enrolmentId && ar.WeekNumber == weekNumber);
-
+            .FirstOrDefaultAsync(ar => ar.CourseEnrolmentId == enrolmentId
+                                    && ar.WeekNumber == weekNumber);
         if (existing != null)
         {
             existing.Present     = present;
@@ -411,7 +447,30 @@ public class FacultyController : Controller
         return RedirectToAction(nameof(Attendance), new { enrolmentId });
     }
 
-    //Private helpers
+    /// <summary>
+    /// Deletes a single attendance record so faculty can correct mistakes.
+    /// </summary>
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteAttendance(int id, int enrolmentId)
+    {
+        var record = await _db.AttendanceRecords.FindAsync(id);
+        if (record == null) return NotFound();
+
+        var enrolment = await _db.CourseEnrolments.FindAsync(record.CourseEnrolmentId);
+        if (enrolment == null) return NotFound();
+
+        var courseIds = await GetMyCourseIdsAsync();
+        if (!courseIds.Contains(enrolment.CourseId)) return Forbid();
+
+        _db.AttendanceRecords.Remove(record);
+        await _db.SaveChangesAsync();
+        TempData["Success"] = $"Week {record.WeekNumber} record deleted.";
+        return RedirectToAction(nameof(Attendance), new { enrolmentId });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Private helpers
+    // ═══════════════════════════════════════════════════════════════════════════
 
     private async Task PopulateAssignmentSelectList(List<int> courseIds, int? selectedId = null)
     {
@@ -419,21 +478,26 @@ public class FacultyController : Controller
             await _db.Assignments
                 .Where(a => courseIds.Contains(a.CourseId))
                 .Include(a => a.Course)
-                .OrderBy(a => a.Title)
+                .OrderBy(a => a.Course.Name).ThenBy(a => a.Title)
                 .Select(a => new { a.Id, Display = $"{a.Title} ({a.Course.Name})" })
                 .ToListAsync(),
             "Id", "Display", selectedId);
     }
 
-    private async Task PopulateStudentSelectList(List<int> courseIds, int? selectedId = null)
+    /// <summary>
+    /// Scopes student dropdown to students enrolled in THIS faculty's courses only.
+    /// Fixes the bug where all students appeared regardless of their enrolment.
+    /// </summary>
+    private async Task PopulateStudentSelectListForCourses(List<int> courseIds, int? selectedId = null)
     {
-        ViewBag.StudentProfileId = new SelectList(
-            await _db.StudentProfiles
-                .Where(sp => sp.Enrolments.Any(e => courseIds.Contains(e.CourseId)))
-                .OrderBy(sp => sp.Name)
-                .Select(sp => new { sp.Id, Display = $"{sp.Name} ({sp.StudentNumber})" })
-                .ToListAsync(),
-            "Id", "Display", selectedId);
+        // Only students who are enrolled in at least one of this faculty's courses
+        var students = await _db.StudentProfiles
+            .Where(sp => sp.Enrolments.Any(e => courseIds.Contains(e.CourseId)))
+            .OrderBy(sp => sp.Name)
+            .Select(sp => new { sp.Id, Display = $"{sp.Name} ({sp.StudentNumber})" })
+            .ToListAsync();
+
+        ViewBag.StudentProfileId = new SelectList(students, "Id", "Display", selectedId);
     }
 
     private async Task PopulateExamSelectList(List<int> courseIds, int? selectedId = null)
@@ -442,14 +506,14 @@ public class FacultyController : Controller
             await _db.Exams
                 .Where(e => courseIds.Contains(e.CourseId))
                 .Include(e => e.Course)
-                .OrderBy(e => e.Title)
+                .OrderBy(e => e.Course.Name).ThenBy(e => e.Title)
                 .Select(e => new { e.Id, Display = $"{e.Title} ({e.Course.Name})" })
                 .ToListAsync(),
             "Id", "Display", selectedId);
     }
 }
 
-//Faculty dashboard view model
+// ── Faculty dashboard view model ──────────────────────────────────────────────
 public class FacultyDashboardViewModel
 {
     public FacultyProfile FacultyProfile { get; set; } = null!;

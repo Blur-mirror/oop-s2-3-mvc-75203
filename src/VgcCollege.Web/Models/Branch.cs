@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
 /// <summary>
 /// Represents a physical campus branch of VGC College.
-/// Courses are offered at a specific branch.
 /// </summary>
 public class Branch
 {
@@ -17,7 +17,6 @@ public class Branch
     [Required, MaxLength(300)]
     public string Address { get; set; } = string.Empty;
 
-    // ── Navigation ──────────────────────────────────────────────────────────
-    /// <summary>All courses offered at this branch.</summary>
+    [ValidateNever]
     public ICollection<Course> Courses { get; set; } = new List<Course>();
 }

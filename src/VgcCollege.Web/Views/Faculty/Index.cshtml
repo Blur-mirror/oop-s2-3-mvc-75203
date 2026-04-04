@@ -1,0 +1,66 @@
+@model FacultyDashboardViewModel
+@{ ViewData["Title"] = "Faculty Dashboard"; }
+
+<h2 class="mb-4"><i class="bi bi-speedometer2 me-2 text-warning"></i>Welcome, @Model.FacultyProfile.Name</h2>
+
+<div class="row g-3 mb-4">
+    <div class="col-sm-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-primary">@Model.MyCourses.Count</div>
+                <div class="text-muted small"><i class="bi bi-book me-1"></i>My Courses</div>
+                <a asp-action="MyCourses" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-success">@Model.MyCourses.Sum(c => c.Enrolments.Count)</div>
+                <div class="text-muted small"><i class="bi bi-people me-1"></i>My Students</div>
+                <a asp-action="MyCourses" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card text-center border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="fs-1 fw-bold text-info">@Model.RecentResults.Count</div>
+                <div class="text-muted small"><i class="bi bi-table me-1"></i>Recent Results</div>
+                <a asp-action="Gradebook" class="stretched-link"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header"><i class="bi bi-book me-2"></i>My Courses</div>
+            <ul class="list-group list-group-flush">
+            @foreach (var c in Model.MyCourses)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>@c.Name <small class="text-muted">(@c.Branch.Name)</small></span>
+                    <a asp-action="CourseStudents" asp-route-courseId="@c.Id" class="btn btn-sm btn-outline-dark">Students</a>
+                </li>
+            }
+            </ul>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header"><i class="bi bi-clock-history me-2"></i>Recent Results</div>
+            <ul class="list-group list-group-flush">
+            @foreach (var r in Model.RecentResults)
+            {
+                <li class="list-group-item">
+                    <span class="fw-semibold">@r.StudentProfile.Name</span>
+                    <small class="text-muted ms-2">@r.Assignment.Title</small>
+                    <span class="float-end badge bg-primary">@r.Score / @r.Assignment.MaxScore</span>
+                </li>
+            }
+            </ul>
+        </div>
+    </div>
+</div>

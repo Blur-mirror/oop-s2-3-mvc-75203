@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using VgcCollege.Web.Data;
 using VgcCollege.Web.Models;
 
-
-
 namespace VgcCollege.Web.Controllers;
 
-
+/// <summary>
 /// Admin-only controller. Every action requires the Administrator role
 /// (enforced server-side via [Authorize] – not just hidden UI links).
 /// Covers: branches, courses, faculty assignments, enrolments, result release.
+/// </summary>
 [Authorize(Roles = "Administrator")]
 public class AdminController : Controller
 {
@@ -26,8 +25,10 @@ public class AdminController : Controller
         _userManager = userManager;
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Dashboard
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Index()
     {
         var vm = new AdminDashboardViewModel
@@ -47,8 +48,10 @@ public class AdminController : Controller
         return View(vm);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Branches
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Branches() =>
         View(await _db.Branches.Include(b => b.Courses).ToListAsync());
 
@@ -102,8 +105,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Branches));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Courses
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Courses() =>
         View(await _db.Courses
             .Include(c => c.Branch)
@@ -120,6 +125,7 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateCourse(Course model)
     {
+        ModelState.Remove(nameof(Course.Branch));
         if (!ModelState.IsValid) { await PopulateBranchSelectList(); return View(model); }
         _db.Courses.Add(model);
         await _db.SaveChangesAsync();
@@ -139,6 +145,7 @@ public class AdminController : Controller
     public async Task<IActionResult> EditCourse(int id, Course model)
     {
         if (id != model.Id) return BadRequest();
+        ModelState.Remove(nameof(Course.Branch));
         if (!ModelState.IsValid) { await PopulateBranchSelectList(model.BranchId); return View(model); }
         _db.Update(model);
         await _db.SaveChangesAsync();
@@ -157,8 +164,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Courses));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Students
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Students() =>
         View(await _db.StudentProfiles
             .Include(s => s.Enrolments).ThenInclude(e => e.Course)
@@ -193,6 +202,10 @@ public class AdminController : Controller
         if (existing == null) return NotFound();
         model.IdentityUserId = existing.IdentityUserId;
 
+        // Nav properties are never posted back from a form – clear their
+        // ModelState errors so they don't block a valid save.
+        ModelState.Remove(nameof(StudentProfile.IdentityUser));
+
         if (!ModelState.IsValid) return View(model);
         _db.Update(model);
         await _db.SaveChangesAsync();
@@ -200,14 +213,17 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Students));
     }
 
+    // ═══════════════════════════════════════════════════════════════════════════
     // Faculty management
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Faculty() =>
         View(await _db.FacultyProfiles
             .Include(f => f.CourseAssignments).ThenInclude(ca => ca.Course)
             .OrderBy(f => f.Name)
             .ToListAsync());
 
-    ///Assign a faculty member to a course with a role
+    /// <summary>Assign a faculty member to a course with a role.</summary>
     public async Task<IActionResult> AssignFaculty()
     {
         await PopulateFacultySelectList();
@@ -218,6 +234,10 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignFaculty(FacultyCourseAssignment model)
     {
+        // Nav properties are not posted – remove their errors so they don't block save
+        ModelState.Remove(nameof(FacultyCourseAssignment.FacultyProfile));
+        ModelState.Remove(nameof(FacultyCourseAssignment.Course));
+
         // Check for duplicate assignment
         bool exists = await _db.FacultyCourseAssignments
             .AnyAsync(fca => fca.FacultyProfileId == model.FacultyProfileId
@@ -253,8 +273,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Faculty));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Enrolments
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Enrolments(int? courseId)
     {
         var query = _db.CourseEnrolments
@@ -279,7 +301,10 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateEnrolment(CourseEnrolment model)
     {
-        // Prevent duplicate enrolment
+        // Nav properties are not posted from the form – clear their errors
+        ModelState.Remove(nameof(CourseEnrolment.StudentProfile));
+        ModelState.Remove(nameof(CourseEnrolment.Course));
+
         bool alreadyEnrolled = await _db.CourseEnrolments
             .AnyAsync(e => e.StudentProfileId == model.StudentProfileId
                         && e.CourseId         == model.CourseId);
@@ -310,8 +335,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Enrolments));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Exams – result release management
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Exams() =>
         View(await _db.Exams
             .Include(e => e.Course)
@@ -319,9 +346,10 @@ public class AdminController : Controller
             .OrderBy(e => e.Course.Name).ThenBy(e => e.Date)
             .ToListAsync());
 
-
+    /// <summary>
     /// Toggles the ResultsReleased flag. This is the gating mechanism
     /// that controls whether students can see their exam results.
+    /// </summary>
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> ToggleExamRelease(int id)
     {
@@ -344,6 +372,8 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateExam(Exam model)
     {
+        ModelState.Remove(nameof(Exam.Course));
+        ModelState.Remove(nameof(Exam.Results));
         if (!ModelState.IsValid) { await PopulateCourseSelectList(model.CourseId); return View(model); }
         _db.Exams.Add(model);
         await _db.SaveChangesAsync();
@@ -363,6 +393,8 @@ public class AdminController : Controller
     public async Task<IActionResult> EditExam(int id, Exam model)
     {
         if (id != model.Id) return BadRequest();
+        ModelState.Remove(nameof(Exam.Course));
+        ModelState.Remove(nameof(Exam.Results));
         if (!ModelState.IsValid) { await PopulateCourseSelectList(model.CourseId); return View(model); }
         _db.Update(model);
         await _db.SaveChangesAsync();
@@ -370,8 +402,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Exams));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Assignments (admin view)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Assignments() =>
         View(await _db.Assignments
             .Include(a => a.Course)
@@ -388,6 +422,8 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> CreateAssignment(Assignment model)
     {
+        ModelState.Remove(nameof(Assignment.Course));
+        ModelState.Remove(nameof(Assignment.Results));
         if (!ModelState.IsValid) { await PopulateCourseSelectList(model.CourseId); return View(model); }
         _db.Assignments.Add(model);
         await _db.SaveChangesAsync();
@@ -407,6 +443,8 @@ public class AdminController : Controller
     public async Task<IActionResult> EditAssignment(int id, Assignment model)
     {
         if (id != model.Id) return BadRequest();
+        ModelState.Remove(nameof(Assignment.Course));
+        ModelState.Remove(nameof(Assignment.Results));
         if (!ModelState.IsValid) { await PopulateCourseSelectList(model.CourseId); return View(model); }
         _db.Update(model);
         await _db.SaveChangesAsync();
@@ -414,8 +452,10 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Assignments));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Private helpers
+    // ═══════════════════════════════════════════════════════════════════════════
+
     private async Task PopulateBranchSelectList(int? selectedId = null)
     {
         ViewBag.BranchId = new SelectList(
@@ -450,7 +490,7 @@ public class AdminController : Controller
     }
 }
 
-//Admin dashboard view model
+// ── Admin dashboard view model ────────────────────────────────────────────────
 public class AdminDashboardViewModel
 {
     public int BranchCount    { get; set; }

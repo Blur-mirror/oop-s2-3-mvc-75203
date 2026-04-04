@@ -1,0 +1,23 @@
+@model IEnumerable<VgcCollege.Web.Models.Course>
+@{ ViewData["Title"] = "My Courses"; }
+
+<h2 class="mb-4"><i class="bi bi-book me-2 text-warning"></i>My Courses</h2>
+
+@foreach (var c in Model)
+{
+    <div class="card shadow-sm mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="fw-semibold">@c.Name</span>
+            <span class="badge bg-secondary">@c.Branch.Name</span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted small mb-2">@c.Enrolments.Count student(s) enrolled</p>
+            <a asp-action="CourseStudents" asp-route-courseId="@c.Id" class="btn btn-sm btn-outline-dark me-2">
+                <i class="bi bi-people me-1"></i>View Students
+            </a>
+            <a asp-action="Gradebook" asp-route-courseId="@c.Id" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-table me-1"></i>Gradebook
+            </a>
+        </div>
+    </div>
+}

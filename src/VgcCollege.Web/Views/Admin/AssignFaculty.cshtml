@@ -1,0 +1,46 @@
+@model VgcCollege.Web.Models.FacultyCourseAssignment
+@{ ViewData["Title"] = "Assign Faculty to Course"; }
+
+<h2 class="mb-4"><i class="bi bi-person-badge me-2"></i>Assign Faculty to Course</h2>
+<div class="card shadow-sm" style="max-width:540px">
+    <div class="card-body">
+        <form asp-action="AssignFaculty" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="alert alert-danger d-none" id="valSummary"></div>
+            <div class="mb-3">
+                <label asp-for="FacultyProfileId" class="form-label fw-semibold">Faculty Member</label>
+                <select asp-for="FacultyProfileId" asp-items="ViewBag.FacultyProfileId" class="form-select">
+                    <option value="">-- Select faculty --</option>
+                </select>
+                <span asp-validation-for="FacultyProfileId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CourseId" class="form-label fw-semibold">Course</label>
+                <select asp-for="CourseId" asp-items="ViewBag.CourseId" class="form-select">
+                    <option value="">-- Select course --</option>
+                </select>
+                <span asp-validation-for="CourseId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label fw-semibold">Role</label>
+                <select asp-for="Role" class="form-select">
+                    <option>Lecturer</option>
+                    <option>Tutor</option>
+                    <option>Lab Assistant</option>
+                </select>
+                <div class="form-text">Tutors can view student contact details.</div>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Assign</button>
+                <a asp-action="Faculty" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    // Show validation summary if it has content
+    document.addEventListener("DOMContentLoaded", () => {
+        const vs = document.getElementById("valSummary");
+        if (vs && vs.querySelectorAll("li").length) vs.classList.remove("d-none");
+    });
+</script>

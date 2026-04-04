@@ -1,0 +1,47 @@
+@model IEnumerable<VgcCollege.Web.Models.AssignmentResult>
+@{ ViewData["Title"] = "Gradebook"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-table me-2 text-warning"></i>Gradebook</h2>
+    <a asp-action="AddResult" class="btn btn-dark"><i class="bi bi-plus me-1"></i>Add Result</a>
+</div>
+
+<!-- Course filter -->
+<form method="get" class="row g-2 mb-4">
+    <div class="col-auto">
+        <select name="courseId" asp-items="ViewBag.CourseId" class="form-select">
+            <option value="">All My Courses</option>
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-outline-dark">Filter</button></div>
+</form>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr><th>Student</th><th>Assignment</th><th>Course</th><th>Score</th><th>%</th><th>Feedback</th><th></th></tr>
+            </thead>
+            <tbody>
+            @foreach (var r in Model)
+            {
+                <tr>
+                    <td>@r.StudentProfile.Name</td>
+                    <td>@r.Assignment.Title</td>
+                    <td>@r.Assignment.Course.Name</td>
+                    <td>@r.Score / @r.Assignment.MaxScore</td>
+                    <td>
+                        <span class="badge @(r.Percentage>=70?"bg-success":r.Percentage>=50?"bg-warning text-dark":"bg-danger")">
+                            @r.Percentage%
+                        </span>
+                    </td>
+                    <td><small class="text-muted">@(r.Feedback ?? "—")</small></td>
+                    <td>
+                        <a asp-action="EditResult" asp-route-id="@r.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

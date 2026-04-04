@@ -1,0 +1,40 @@
+@model VgcCollege.Web.Models.CourseEnrolment
+@{ ViewData["Title"] = "Enrol Student"; }
+
+<h2 class="mb-4"><i class="bi bi-person-plus me-2"></i>Enrol Student</h2>
+<div class="card shadow-sm" style="max-width:540px">
+    <div class="card-body">
+        <form asp-action="CreateEnrolment" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            <div class="mb-3">
+                <label asp-for="StudentProfileId" class="form-label fw-semibold">Student</label>
+                <select asp-for="StudentProfileId" asp-items="ViewBag.StudentProfileId" class="form-select">
+                    <option value="">-- Select student --</option>
+                </select>
+                <span asp-validation-for="StudentProfileId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="CourseId" class="form-label fw-semibold">Course</label>
+                <select asp-for="CourseId" asp-items="ViewBag.CourseId" class="form-select">
+                    <option value="">-- Select course --</option>
+                </select>
+                <span asp-validation-for="CourseId" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="EnrolDate" class="form-label fw-semibold"></label>
+                <input asp-for="EnrolDate" class="form-control" type="date" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Status" class="form-label fw-semibold"></label>
+                <select asp-for="Status" class="form-select">
+                    <option>Active</option><option>Withdrawn</option><option>Completed</option>
+                </select>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Enrol</button>
+                <a asp-action="Enrolments" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

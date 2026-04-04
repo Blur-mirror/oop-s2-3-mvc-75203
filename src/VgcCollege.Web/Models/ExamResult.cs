@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
@@ -11,22 +12,19 @@ public class ExamResult
     public int Id { get; set; }
 
     public int ExamId { get; set; }
+    [ValidateNever]
     public Exam Exam { get; set; } = null!;
 
     public int StudentProfileId { get; set; }
+    [ValidateNever]
     public StudentProfile StudentProfile { get; set; } = null!;
 
     [Range(0, 10000)]
     public decimal Score { get; set; }
 
-    /// <summary>Letter grade: A, B, C, D, F – calculated on save.</summary>
     [MaxLength(2)]
     public string Grade { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Derives a letter grade from the percentage score against MaxScore.
-    /// Called in the service layer before persisting.
-    /// </summary>
     public static string CalculateGrade(decimal score, decimal maxScore)
     {
         if (maxScore <= 0) return "F";
@@ -41,7 +39,6 @@ public class ExamResult
         };
     }
 
-    /// <summary>Computed percentage for display.</summary>
     public decimal Percentage => Exam?.MaxScore > 0
         ? Math.Round(Score / Exam.MaxScore * 100, 1)
         : 0;

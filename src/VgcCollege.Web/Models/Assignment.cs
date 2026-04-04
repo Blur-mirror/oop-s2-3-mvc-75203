@@ -1,16 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
 /// <summary>
 /// An assessed assignment belonging to a course.
-/// Results are stored in AssignmentResult.
 /// </summary>
 public class Assignment
 {
     public int Id { get; set; }
 
     public int CourseId { get; set; }
+    [ValidateNever]
     public Course Course { get; set; } = null!;
 
     [Required, MaxLength(200)]
@@ -24,6 +25,6 @@ public class Assignment
     [Display(Name = "Due Date")]
     public DateTime DueDate { get; set; }
 
-    // ── Navigation ──────────────────────────────────────────────────────────
+    [ValidateNever]
     public ICollection<AssignmentResult> Results { get; set; } = new List<AssignmentResult>();
 }

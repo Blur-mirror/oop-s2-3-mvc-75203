@@ -40,7 +40,7 @@
           "dependencies": {
             "Bogus": {
               "target": "Package",
-              "version": "[35.6.5, )"
+              "version": "[35.5.1, )"
             },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",

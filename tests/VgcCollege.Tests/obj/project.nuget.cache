@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "DuHiRb5VAkQjBvEaMPwEOs661LX9UIGMrA30QF7UrQjMdyqiaT9lWY2EY+aRoRps92ZGuSnLYDtMVVS+HkQKyQ==",
+  "dgSpecHash": "fnKjP2ELl2vWGs4D6s3iTiOSZYENDfW5T8uKnT7prB0r7TGWtPJ/jFfxipmys2AEBkJqxNupF+iWsmbXUmONdg==",
   "success": true,
   "projectFilePath": "/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/VgcCollege.Tests.csproj",
   "expectedPackageFiles": [
-    "/home/velvet_logic/.nuget/packages/bogus/35.6.5/bogus.35.6.5.nupkg.sha512",
+    "/home/velvet_logic/.nuget/packages/bogus/35.5.1/bogus.35.5.1.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/coverlet.collector/6.0.0/coverlet.collector.6.0.0.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/microsoft.aspnetcore.cryptography.internal/8.0.25/microsoft.aspnetcore.cryptography.internal.8.0.25.nupkg.sha512",

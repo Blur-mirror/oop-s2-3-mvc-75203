@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
@@ -11,6 +12,7 @@ public class Exam
     public int Id { get; set; }
 
     public int CourseId { get; set; }
+    [ValidateNever]
     public Course Course { get; set; } = null!;
 
     [Required, MaxLength(200)]
@@ -23,13 +25,9 @@ public class Exam
     [Display(Name = "Max Score")]
     public decimal MaxScore { get; set; }
 
-    /// <summary>
-    /// When false, students see "Provisional – not yet released" instead of their score.
-    /// Admin can flip this flag; the check is enforced server-side in the controller.
-    /// </summary>
     [Display(Name = "Results Released")]
     public bool ResultsReleased { get; set; } = false;
 
-    // ── Navigation ──────────────────────────────────────────────────────────
+    [ValidateNever]
     public ICollection<ExamResult> Results { get; set; } = new List<ExamResult>();
 }

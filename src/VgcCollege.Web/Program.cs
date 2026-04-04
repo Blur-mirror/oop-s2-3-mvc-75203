@@ -5,7 +5,7 @@ using VgcCollege.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ── Database ──────────────────────────────────────────────────────────────────
+//Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? "Data Source=vgccollege.db";
 
@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// ── ASP.NET Identity ──────────────────────────────────────────────────────────
+//ASP.NET Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount  = false;
@@ -26,10 +26,10 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// ── MVC ───────────────────────────────────────────────────────────────────────
+//MVC
 builder.Services.AddControllersWithViews();
 
-// ── Authorization policies ────────────────────────────────────────────────────
+//Authorization policies
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly",    p => p.RequireRole("Administrator"));
@@ -40,13 +40,13 @@ builder.Services.AddAuthorization(options =>
 
 var app = builder.Build();
 
-// ── Seed database on startup ──────────────────────────────────────────────────
+//Seed database on startup
 using (var scope = app.Services.CreateScope())
 {
     await DbSeeder.EnsureSeeded(scope.ServiceProvider);
 }
 
-// ── HTTP Pipeline ─────────────────────────────────────────────────────────────
+//HTTP Pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();

@@ -1,0 +1,39 @@
+@model VgcCollege.Web.Models.Course
+@{ ViewData["Title"] = "New Course"; }
+
+<h2 class="mb-4"><i class="bi bi-book me-2"></i>New Course</h2>
+<div class="card shadow-sm" style="max-width:560px">
+    <div class="card-body">
+        <form asp-action="CreateCourse" method="post">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label fw-semibold"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger small"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="BranchId" class="form-label fw-semibold">Branch</label>
+                <select asp-for="BranchId" asp-items="ViewBag.BranchId" class="form-select">
+                    <option value="">-- Select branch --</option>
+                </select>
+                <span asp-validation-for="BranchId" class="text-danger small"></span>
+            </div>
+            <div class="row">
+                <div class="col mb-3">
+                    <label asp-for="StartDate" class="form-label fw-semibold"></label>
+                    <input asp-for="StartDate" class="form-control" type="date" />
+                    <span asp-validation-for="StartDate" class="text-danger small"></span>
+                </div>
+                <div class="col mb-3">
+                    <label asp-for="EndDate" class="form-label fw-semibold"></label>
+                    <input asp-for="EndDate" class="form-control" type="date" />
+                    <span asp-validation-for="EndDate" class="text-danger small"></span>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Save</button>
+                <a asp-action="Courses" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

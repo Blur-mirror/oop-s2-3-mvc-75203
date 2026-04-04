@@ -1,0 +1,32 @@
+@model IEnumerable<VgcCollege.Web.Models.Assignment>
+@{ ViewData["Title"] = "Assignments"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-file-earmark-text me-2 text-warning"></i>Assignments</h2>
+    <a asp-action="CreateAssignment" class="btn btn-dark"><i class="bi bi-plus me-1"></i>New Assignment</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr><th>Title</th><th>Course</th><th>Due</th><th>Max</th><th>Results</th><th></th></tr>
+            </thead>
+            <tbody>
+            @foreach (var a in Model)
+            {
+                <tr>
+                    <td class="fw-semibold">@a.Title</td>
+                    <td>@a.Course.Name</td>
+                    <td>@a.DueDate.ToString("dd MMM yyyy")</td>
+                    <td>@a.MaxScore</td>
+                    <td>@a.Results.Count</td>
+                    <td>
+                        <a asp-action="EditAssignment" asp-route-id="@a.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -7,10 +7,11 @@ using VgcCollege.Web.Models;
 
 namespace VgcCollege.Web.Controllers;
 
-
+/// <summary>
 /// Student-only controller. Every query is filtered to the logged-in student's
 /// own data – students cannot see other students' information.
 /// Exam results are gated by Exam.ResultsReleased (server-side check).
+/// </summary>
 [Authorize(Roles = "Student")]
 public class StudentController : Controller
 {
@@ -23,7 +24,7 @@ public class StudentController : Controller
         _userManager = userManager;
     }
 
-    //Helper: load this student's profile
+    // ── Helper: load this student's profile ───────────────────────────────────
     private async Task<StudentProfile?> GetMyProfileAsync()
     {
         var userId = _userManager.GetUserId(User);
@@ -31,8 +32,10 @@ public class StudentController : Controller
             .FirstOrDefaultAsync(sp => sp.IdentityUserId == userId);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Dashboard
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Index()
     {
         var profile = await GetMyProfileAsync();
@@ -49,8 +52,10 @@ public class StudentController : Controller
         return View(vm);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // My profile
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Profile()
     {
         var profile = await GetMyProfileAsync();
@@ -58,7 +63,7 @@ public class StudentController : Controller
         return View(profile);
     }
 
-    /// Students can edit their own contact info but not their student number
+    /// <summary>Students can edit their own contact info but not their student number.</summary>
     public async Task<IActionResult> EditProfile()
     {
         var profile = await GetMyProfileAsync();
@@ -77,6 +82,9 @@ public class StudentController : Controller
         model.IdentityUserId = existing.IdentityUserId;
         model.StudentNumber  = existing.StudentNumber;
 
+        // Clear nav-property model state errors – these are never posted from a form
+        ModelState.Remove(nameof(StudentProfile.IdentityUser));
+
         if (!ModelState.IsValid) return View(model);
 
         existing.Name        = model.Name;
@@ -90,8 +98,9 @@ public class StudentController : Controller
         return RedirectToAction(nameof(Profile));
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // My enrolments + attendance
+    // ═══════════════════════════════════════════════════════════════════════════
 
     public async Task<IActionResult> MyEnrolments()
     {
@@ -108,8 +117,10 @@ public class StudentController : Controller
         return View(enrolments);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Gradebook (assignment results)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     public async Task<IActionResult> Gradebook()
     {
         var profile = await GetMyProfileAsync();
@@ -126,12 +137,16 @@ public class StudentController : Controller
         return View(results);
     }
 
-
+    // ═══════════════════════════════════════════════════════════════════════════
     // Exam results (gated by ResultsReleased)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /// <summary>
     /// Shows exam results for this student.
     /// KEY RULE: if Exam.ResultsReleased == false, the student sees a
     /// "Provisional – not yet released" message instead of their score.
-    /// This check happens server-side in the query/view model, never rely on UI alone.
+    /// This check happens server-side in the query/view model – never rely on UI alone.
+    /// </summary>
     public async Task<IActionResult> ExamResults()
     {
         var profile = await GetMyProfileAsync();
@@ -162,15 +177,17 @@ public class StudentController : Controller
     }
 }
 
-//View models
+// ── View models ───────────────────────────────────────────────────────────────
 
 public class StudentDashboardViewModel
 {
     public StudentProfile Profile { get; set; } = null!;
 }
 
+/// <summary>
 /// Wraps an exam result for the student view.
-/// Score and Grade are nullable, null means "not yet released"
+/// Score and Grade are nullable – null means "not yet released".
+/// </summary>
 public class StudentExamResultViewModel
 {
     public string   ExamTitle  { get; set; } = string.Empty;

@@ -1,0 +1,29 @@
+# Build folders
+[Bb]in/
+[Ob]j/
+# Published output
+[Pp]ublish/
+
+# NuGet Packages
+node_modules/
+packages/
+*.nuget.props
+*.nuget.targets
+
+# Visual Studio
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+# Exceptions for VS Code (if you want to share tasks/launch configs)
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# Secrets and Environment Variables
+.env
+appsettings.Development.json
+secrets.json

@@ -1,0 +1,45 @@
+@model IEnumerable<VgcCollege.Web.Models.FacultyProfile>
+@{ ViewData["Title"] = "Faculty"; }
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-person-badge me-2 text-warning"></i>Faculty</h2>
+    <a asp-action="AssignFaculty" class="btn btn-dark"><i class="bi bi-plus me-1"></i>Assign to Course</a>
+</div>
+
+@foreach (var f in Model)
+{
+    <div class="card shadow-sm mb-3">
+        <div class="card-header d-flex justify-content-between">
+            <span class="fw-semibold"><i class="bi bi-person me-2"></i>@f.Name</span>
+            <span class="text-muted small">@f.Email &bull; @f.Phone</span>
+        </div>
+        <div class="card-body">
+            @if (!f.CourseAssignments.Any())
+            {
+                <p class="text-muted mb-0">No course assignments yet.</p>
+            }
+            else
+            {
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Course</th><th>Role</th><th></th></tr></thead>
+                    <tbody>
+                    @foreach (var ca in f.CourseAssignments)
+                    {
+                        <tr>
+                            <td>@ca.Course.Name</td>
+                            <td><span class="badge @(ca.Role=="Tutor"?"bg-warning text-dark":"bg-secondary")">@ca.Role</span></td>
+                            <td>
+                                <form asp-action="RemoveFacultyAssignment" asp-route-id="@ca.Id" method="post"
+                                      onsubmit="return confirm('Remove this assignment?')">
+                                    @Html.AntiForgeryToken()
+                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+}

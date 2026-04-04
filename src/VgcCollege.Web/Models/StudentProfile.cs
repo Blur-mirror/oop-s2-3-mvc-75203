@@ -1,18 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
 /// <summary>
 /// Extended profile for a student user.
-/// Linked 1-to-1 with an ASP.NET Identity ApplicationUser.
 /// </summary>
 public class StudentProfile
 {
     public int Id { get; set; }
 
-    /// <summary>FK to AspNetUsers.Id (string GUID).</summary>
     [Required]
     public string IdentityUserId { get; set; } = string.Empty;
+    [ValidateNever]
     public ApplicationUser IdentityUser { get; set; } = null!;
 
     [Required, MaxLength(120)]
@@ -36,8 +36,10 @@ public class StudentProfile
     [Display(Name = "Student Number")]
     public string StudentNumber { get; set; } = string.Empty;
 
-    // ── Navigation ──────────────────────────────────────────────────────────
+    [ValidateNever]
     public ICollection<CourseEnrolment> Enrolments { get; set; } = new List<CourseEnrolment>();
+    [ValidateNever]
     public ICollection<AssignmentResult> AssignmentResults { get; set; } = new List<AssignmentResult>();
+    [ValidateNever]
     public ICollection<ExamResult> ExamResults { get; set; } = new List<ExamResult>();
 }

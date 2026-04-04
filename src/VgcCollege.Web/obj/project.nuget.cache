@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "qdI2Yr0VLkcY72qmTgv57Nc4IYJfiB9RSf/QCCEWv4BznUkgtO8bONE8fVDBcBPIAK4PAYRrZng6XDjLGIelIQ==",
+  "dgSpecHash": "S5Dex7jwAkTzrjlYE7Wm6t83kgwhv2Px4a4Er+XcCPwRuSamcfloRtwQRLmOsJ4k6XJZstn9SHE4wfUSWCZrCg==",
   "success": true,
   "projectFilePath": "/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/src/VgcCollege.Web/VgcCollege.Web.csproj",
   "expectedPackageFiles": [
-    "/home/velvet_logic/.nuget/packages/bogus/35.6.5/bogus.35.6.5.nupkg.sha512",
+    "/home/velvet_logic/.nuget/packages/bogus/35.5.1/bogus.35.5.1.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/microsoft.aspnetcore.cryptography.internal/8.0.25/microsoft.aspnetcore.cryptography.internal.8.0.25.nupkg.sha512",
     "/home/velvet_logic/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/8.0.25/microsoft.aspnetcore.cryptography.keyderivation.8.0.25.nupkg.sha512",

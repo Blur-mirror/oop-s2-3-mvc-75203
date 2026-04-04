@@ -1,16 +1,17 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
 /// <summary>
 /// Records whether a student was present for a given week's session.
-/// Belongs to a CourseEnrolment (cascades on enrolment delete).
 /// </summary>
 public class AttendanceRecord
 {
     public int Id { get; set; }
 
     public int CourseEnrolmentId { get; set; }
+    [ValidateNever]
     public CourseEnrolment CourseEnrolment { get; set; } = null!;
 
     [Range(1, 52)]

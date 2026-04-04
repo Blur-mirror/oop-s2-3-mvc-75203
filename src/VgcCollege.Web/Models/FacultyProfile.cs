@@ -1,18 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
 /// <summary>
 /// Extended profile for a faculty (staff) user.
-/// Linked 1-to-1 with an ASP.NET Identity ApplicationUser.
 /// </summary>
 public class FacultyProfile
 {
     public int Id { get; set; }
 
-    /// <summary>FK to AspNetUsers.Id (string GUID).</summary>
     [Required]
     public string IdentityUserId { get; set; } = string.Empty;
+    [ValidateNever]
     public ApplicationUser IdentityUser { get; set; } = null!;
 
     [Required, MaxLength(120)]
@@ -25,7 +25,6 @@ public class FacultyProfile
     [Phone, MaxLength(30)]
     public string? Phone { get; set; }
 
-    // ── Navigation ──────────────────────────────────────────────────────────
-    /// <summary>Courses this faculty member is assigned to.</summary>
+    [ValidateNever]
     public ICollection<FacultyCourseAssignment> CourseAssignments { get; set; } = new List<FacultyCourseAssignment>();
 }

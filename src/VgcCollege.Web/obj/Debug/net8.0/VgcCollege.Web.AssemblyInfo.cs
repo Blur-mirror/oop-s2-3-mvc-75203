@@ -11,11 +11,11 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.AspNetCore.Identity.UI.UIFrameworkAttribute("Bootstrap5")]
-[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-VgcCollege.Web-0dd2cd13-017f-46ef-a940-41ab7a537c03")]
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("aspnet-VgcCollege.Web-c468e13f-b1a6-4ed3-8abb-0850313b0f86")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6300cfc201102d4854a6c087cc33f408c5732ecf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fd891410305c463817dfbaa40e40211c86349ff")]
 [assembly: System.Reflection.AssemblyProductAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

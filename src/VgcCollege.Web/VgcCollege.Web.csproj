@@ -1,23 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
+  <!-- VgcCollege.Web – ASP.NET Core 8 MVC college management system -->
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-VgcCollege.Web-0dd2cd13-017f-46ef-a940-41ab7a537c03</UserSecretsId>
+    <UserSecretsId>aspnet-VgcCollege.Web-c468e13f-b1a6-4ed3-8abb-0850313b0f86</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Bogus" Version="35.6.5" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.25" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.25" />
+    <!-- Bogus: realistic fake data for seeding -->
+    <PackageReference Include="Bogus" Version="35.5.1" />
   </ItemGroup>
 
 </Project>
