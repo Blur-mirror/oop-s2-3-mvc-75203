@@ -1,10 +1,11 @@
-# Build folders
-[Bb]in/
-[Ob]j/
-# Published output
-[Pp]ublish/
+# Build output – match at any depth
+**/[Bb]in/
+**/[Oo]bj/
 
-# NuGet Packages
+# Published output
+**/[Pp]ublish/
+
+# NuGet
 node_modules/
 packages/
 *.nuget.props
@@ -18,12 +19,16 @@ packages/
 
 # VS Code
 .vscode/
-# Exceptions for VS Code (if you want to share tasks/launch configs)
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 
-# Secrets and Environment Variables
+# Secrets
 .env
 appsettings.Development.json
 secrets.json
+
+# SQLite databases
+*.db
+*.db-shm
+*.db-wal
