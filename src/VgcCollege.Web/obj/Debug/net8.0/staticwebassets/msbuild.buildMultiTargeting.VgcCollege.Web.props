@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../build/VgcCollege.Web.props" />
-</Project>

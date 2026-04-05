@@ -27,3 +27,10 @@ packages/
 .env
 appsettings.Development.json
 secrets.json
+
+# Build output
+**/bin/
+**/obj/
+*.db
+*.db-shm
+*.db-wal
