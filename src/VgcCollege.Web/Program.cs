@@ -5,7 +5,9 @@ using VgcCollege.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Database
+//Services Configuration
+
+// Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? "Data Source=vgccollege.db";
 
@@ -14,39 +16,45 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//ASP.NET Identity
+// ASP.NET Identity
 builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount  = false;
-    options.Password.RequiredLength        = 8;
-    options.Password.RequireDigit          = true;
-    options.Password.RequireUppercase      = true;
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
 })
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//MVC
+// MVC
 builder.Services.AddControllersWithViews();
 
-//Authorization policies
+// Authorization policies
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly",    p => p.RequireRole("Administrator"));
-    options.AddPolicy("FacultyOnly",  p => p.RequireRole("Faculty"));
-    options.AddPolicy("StudentOnly",  p => p.RequireRole("Student"));
+    options.AddPolicy("AdminOnly", p => p.RequireRole("Administrator"));
+    options.AddPolicy("FacultyOnly", p => p.RequireRole("Faculty"));
+    options.AddPolicy("StudentOnly", p => p.RequireRole("Student"));
     options.AddPolicy("StaffOrAdmin", p => p.RequireRole("Administrator", "Faculty"));
 });
 
 var app = builder.Build();
 
-//Seed database on startup
+// Seed database on startup
 using (var scope = app.Services.CreateScope())
 {
     await DbSeeder.EnsureSeeded(scope.ServiceProvider);
 }
 
-//HTTP Pipeline
+//Middleware Pipeline
+// Order is critical first registered = outermost = runs first on request,
+// last on response.
+
+// 1. Exception handler, outermost so it catches errors from everything below
+app.UseMiddleware<VgcCollege.Web.Middleware.GlobalExceptionMiddleware>();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -60,10 +68,19 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+// 2. Timing, wraps auth + controller execution
+// Placed here to include the latency of the authentication/authorization process
+app.UseMiddleware<VgcCollege.Web.Middleware.RequestTimingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
+// 3. User enrichment, after auth so User.Identity is populated
+// If placed before Authentication, User.Identity.IsAuthenticated would always be false.
 app.UseMiddleware<VgcCollege.Web.Middleware.UserEnrichmentMiddleware>();
+
+//Endpoints
 
 app.MapControllerRoute(
     name: "default",

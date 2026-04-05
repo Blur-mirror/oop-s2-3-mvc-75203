@@ -1,0 +1,89 @@
+﻿@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Sign In"; Layout = "/Views/Shared/_Layout.cshtml";
+}
+
+<div class="login-wrapper">
+
+    <!-- Logo block -->
+    <div style="text-align:center; margin-bottom:36px;">
+        <div class="login-logo stat-icon gold" style="width:68px;height:68px;font-size:34px;
+            border-radius:16px;display:inline-flex;
+            align-items:center;justify-content:center;margin-bottom:18px;">
+            🎓
+        </div>
+        <h1 class="login-title" style="font-size:26px;font-weight:700;
+            color:var(--color-text);margin-bottom:6px;">
+            Welcome back
+        </h1>
+        <p class="login-subtitle" style="color:var(--color-text-muted);font-size:14px;">
+            Sign in to VGC College
+        </p>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+        <div class="card-body" style="padding:28px;">
+
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label" style="font-size:14px;">Email address</label>
+                    <input asp-for="Input.Email" class="form-control" style="font-size:14px;padding:11px 14px;"
+                           autocomplete="username" placeholder="you@vgc.ie" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Input.Password" class="form-label" style="font-size:14px;">Password</label>
+                    <input asp-for="Input.Password" class="form-control" style="font-size:14px;padding:11px 14px;"
+                           autocomplete="current-password" placeholder="••••••••" />
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+
+                <button type="submit" class="btn btn-dark" style="width:100%;justify-content:center;
+                    padding:13px;font-size:15px;">
+                    <i class="bi bi-box-arrow-in-right"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Demo credentials -->
+    <div style="background:var(--color-surface);border:1px solid var(--color-border);
+        border-radius:12px;padding:20px;">
+        <p style="font-size:12px;font-weight:600;text-transform:uppercase;
+            letter-spacing:0.5px;color:var(--color-text-muted);margin-bottom:12px;">
+            Demo Accounts
+        </p>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+            @foreach (var acct in new[] {
+                ("Administrator", "admin@vgc.ie", "Admin1234!"),
+                ("Faculty", "faculty1@vgc.ie", "Faculty1234!"),
+                ("Student", "student1@vgc.ie", "Student1234!")
+            })
+            {
+                <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:12px 14px;background:var(--color-surface-2);
+                    border-radius:8px;cursor:pointer;transition:opacity 0.15s;" onmouseover="this.style.opacity='0.8'"
+                     onmouseout="this.style.opacity='1'" onclick="document.getElementById('Input_Email').value='@acct.Item2';
+                    document.getElementById('Input_Password').value='@acct.Item3';">
+                    <div>
+                        <span style="font-size:14px;font-weight:600;
+                        color:var(--color-text);">@acct.Item1</span>
+                        <span style="font-size:12px;color:var(--color-text-muted);
+                        margin-left:8px;">@acct.Item2</span>
+                    </div>
+                    <i class="bi bi-arrow-right-circle" style="color:var(--color-accent);font-size:16px;"></i>
+                </div>
+            }
+        </div>
+        <p style="font-size:12px;color:var(--color-text-muted);margin-top:10px;margin-bottom:0;">
+            <i class="bi bi-cursor me-1"></i>Click any row to autofill credentials
+        </p>
+    </div>
+
+</div>

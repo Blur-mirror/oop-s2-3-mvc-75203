@@ -1,87 +1,105 @@
 @model AdminDashboardViewModel
 @{
-    ViewData["Title"] = "Admin Dashboard";
+    ViewData["Title"] = "Dashboard";
 }
 
-<h2 class="mb-4"><i class="bi bi-speedometer2 me-2 text-warning"></i>Admin Dashboard</h2>
+<h2 class="mb-4" style="font-size:20px;font-weight:700;">
+    <i class="bi bi-grid-1x2 me-2" style="color:var(--color-accent);"></i>Admin Dashboard
+</h2>
 
-<!-- Stats cards -->
+<!-- Stat cards -->
 <div class="row g-3 mb-4">
-    <div class="col-sm-6 col-lg-4 col-xl-2">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-primary">@Model.BranchCount</div>
-                <div class="text-muted small"><i class="bi bi-geo-alt me-1"></i>Branches</div>
-                <a asp-action="Branches" class="stretched-link"></a>
+    <div class="col-sm-4 col-md-4" style="flex:0 0 20%;max-width:20%;">
+        <div class="stat-card">
+            <div class="stat-icon gold"><i class="bi bi-geo-alt"></i></div>
+            <div>
+                <div class="stat-value">@Model.BranchCount</div>
+                <div class="stat-label">Branches</div>
             </div>
+            <a asp-action="Branches" class="stretched-link"></a>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 col-xl-2">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-success">@Model.CourseCount</div>
-                <div class="text-muted small"><i class="bi bi-book me-1"></i>Courses</div>
-                <a asp-action="Courses" class="stretched-link"></a>
+    <div class="col-sm-4 col-md-4" style="flex:0 0 20%;max-width:20%;">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="bi bi-book"></i></div>
+            <div>
+                <div class="stat-value">@Model.CourseCount</div>
+                <div class="stat-label">Courses</div>
             </div>
+            <a asp-action="Courses" class="stretched-link"></a>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 col-xl-2">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-info">@Model.StudentCount</div>
-                <div class="text-muted small"><i class="bi bi-people me-1"></i>Students</div>
-                <a asp-action="Students" class="stretched-link"></a>
+    <div class="col-sm-4 col-md-4" style="flex:0 0 20%;max-width:20%;">
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="bi bi-people"></i></div>
+            <div>
+                <div class="stat-value">@Model.StudentCount</div>
+                <div class="stat-label">Students</div>
             </div>
+            <a asp-action="Students" class="stretched-link"></a>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 col-xl-2">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-warning">@Model.FacultyCount</div>
-                <div class="text-muted small"><i class="bi bi-person-badge me-1"></i>Faculty</div>
-                <a asp-action="Faculty" class="stretched-link"></a>
+    <div class="col-sm-4 col-md-4" style="flex:0 0 20%;max-width:20%;">
+        <div class="stat-card">
+            <div class="stat-icon red"><i class="bi bi-person-badge"></i></div>
+            <div>
+                <div class="stat-value">@Model.FacultyCount</div>
+                <div class="stat-label">Faculty</div>
             </div>
+            <a asp-action="Faculty" class="stretched-link"></a>
         </div>
     </div>
-    <div class="col-sm-6 col-lg-4 col-xl-2">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-secondary">@Model.EnrolmentCount</div>
-                <div class="text-muted small"><i class="bi bi-journal-check me-1"></i>Enrolments</div>
-                <a asp-action="Enrolments" class="stretched-link"></a>
+    <div class="col-sm-4 col-md-4" style="flex:0 0 20%;max-width:20%;">
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="bi bi-journal-check"></i></div>
+            <div>
+                <div class="stat-value">@Model.EnrolmentCount</div>
+                <div class="stat-label">Enrolments</div>
             </div>
+            <a asp-action="Enrolments" class="stretched-link"></a>
         </div>
     </div>
 </div>
 
-<!-- Quick actions -->
-<div class="row g-2 mb-4">
-    <div class="col-auto"><a asp-action="CreateBranch"    class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>New Branch</a></div>
-    <div class="col-auto"><a asp-action="CreateCourse"    class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>New Course</a></div>
-    <div class="col-auto"><a asp-action="CreateEnrolment" class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>Enrol Student</a></div>
-    <div class="col-auto"><a asp-action="Exams"           class="btn btn-outline-warning"><i class="bi bi-unlock me-1"></i>Manage Exam Release</a></div>
+<!-- Quick actions — properly spaced from cards and table -->
+<div class="quick-actions">
+    <a asp-action="CreateBranch" class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>New Branch</a>
+    <a asp-action="CreateCourse" class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>New Course</a>
+    <a asp-action="CreateEnrolment" class="btn btn-outline-secondary"><i class="bi bi-plus me-1"></i>Enrol Student</a>
+    <a asp-action="Exams" class="btn btn-outline-warning"><i class="bi bi-unlock me-1"></i>Manage Exam Release</a>
 </div>
 
 <!-- Recent enrolments -->
-<div class="card shadow-sm">
-    <div class="card-header d-flex justify-content-between align-items-center">
+<div class="card">
+    <div class="card-header">
         <span><i class="bi bi-clock-history me-2"></i>Recent Enrolments</span>
-        <a asp-action="Enrolments" class="btn btn-sm btn-outline-dark">View All</a>
+        <a asp-action="Enrolments" class="btn btn-sm btn-outline-secondary">View All</a>
     </div>
     <div class="card-body p-0">
         <table class="table table-hover mb-0">
-            <thead class="table-light">
-                <tr><th>Student</th><th>Course</th><th>Date</th><th>Status</th></tr>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
             </thead>
             <tbody>
                 @foreach (var e in Model.RecentEnrolments)
                 {
                     <tr>
-                        <td><a asp-action="StudentDetails" asp-route-id="@e.StudentProfile.Id">@e.StudentProfile.Name</a></td>
+                        <td>
+                            <a asp-action="StudentDetails" asp-route-id="@e.StudentProfile.Id"
+                                   style="color:var(--color-text);font-weight:500;">
+                                @e.StudentProfile.Name
+                            </a>
+                        </td>
                         <td>@e.Course.Name</td>
                         <td>@e.EnrolDate.ToString("dd MMM yyyy")</td>
                         <td>
-                            <span class="badge @(e.Status == "Active" ? "bg-success" : e.Status == "Withdrawn" ? "bg-danger" : "bg-secondary")">
+                            <span
+                                class="badge @(e.Status == "Active" ? "bg-success" : e.Status == "Withdrawn" ? "bg-danger" : "bg-secondary")">
                                 @e.Status
                             </span>
                         </td>

@@ -22,7 +22,7 @@
             }
             else
             {
-                <table class="table table-sm mb-0">
+                <table class="table table-sm mb-0 faculty-table" style="table-layout:auto;">
                     <thead>
                         <tr>
                             <th>Course</th>
@@ -35,14 +35,8 @@
                         {
                             <tr>
                                 <td>@ca.Course.Name</td>
-                                <td><span class="badge @(ca.Role == "Tutor" ? "bg-warning text-dark" : "bg-secondary")">@ca.Role</span>
-                                </td>
-                                <td>
-                                    <form asp-action="RemoveFacultyAssignment" asp-route-id="@ca.Id" method="post"
-                                          onsubmit="return confirm('Remove this assignment?')">
-                                        @Html.AntiForgeryToken()
-                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                    </form>
+                                <td><span
+                                    class="badge @(ca.Role == "Tutor" ? "bg-warning text-dark" : "bg-secondary")">@ca.Role</span>
                                 </td>
                                 <td>
                                     <div class="d-flex gap-1">
