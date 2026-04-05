@@ -4,9 +4,7 @@
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/appsettings.Development.json
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/appsettings.json
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/VgcCollege.Web.staticwebassets.runtime.json
-/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/app.db
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/VgcCollege.Web
-/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/xunit.runner.visualstudio.dotnetcore.testadapter.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/xunit.runner.reporters.netcoreapp10.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/xunit.runner.utility.netcoreapp10.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/VgcCollege.Tests.deps.json
@@ -52,7 +50,6 @@
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/testhost.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/Mono.TextTemplating.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/Newtonsoft.Json.dll
-/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/NuGet.Frameworks.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/SQLitePCLRaw.batteries_v2.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/SQLitePCLRaw.core.dll
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/SQLitePCLRaw.provider.e_sqlite3.dll
@@ -217,3 +214,5 @@
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/obj/Debug/net8.0/VgcCollege.Tests.pdb
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/obj/Debug/net8.0/VgcCollege.Tests.genruntimeconfig.cache
 /home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/obj/Debug/net8.0/ref/VgcCollege.Tests.dll
+/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/xunit.runner.visualstudio.testadapter.dll
+/home/velvet_logic/Desktop/Coding/C#/MVC/oop-s2-3-mvc-75203/tests/VgcCollege.Tests/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.InMemory.dll

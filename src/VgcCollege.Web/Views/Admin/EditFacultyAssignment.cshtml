@@ -1,0 +1,36 @@
+@model VgcCollege.Web.Models.FacultyCourseAssignment
+@{
+    ViewData["Title"] = "Edit Faculty Assignment";
+}
+
+<h2 class="mb-4"><i class="bi bi-pencil me-2"></i>Edit Faculty Assignment</h2>
+<div class="card shadow-sm" style="max-width:480px">
+    <div class="card-body">
+        <dl class="row mb-3">
+            <dt class="col-sm-4">Faculty</dt>
+            <dd class="col-sm-8">@Model.FacultyProfile.Name</dd>
+            <dt class="col-sm-4">Course</dt>
+            <dd class="col-sm-8">@Model.Course.Name</dd>
+        </dl>
+        <form asp-action="EditFacultyAssignment" asp-route-id="@Model.Id" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <div class="mb-3">
+                <label asp-for="Role" class="form-label fw-semibold">Role</label>
+                <select asp-for="Role" class="form-select">
+                    <option>Lecturer</option>
+                    <option>Tutor</option>
+                    <option>Lab Assistant</option>
+                </select>
+                <div class="form-text">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Tutors can view student contact details.
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Save</button>
+                <a asp-action="Faculty" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

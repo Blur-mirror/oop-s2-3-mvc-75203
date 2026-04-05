@@ -21,7 +21,7 @@ public class AdminController : Controller
 
     public AdminController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
-        _db          = db;
+        _db = db;
         _userManager = userManager;
     }
 
@@ -33,10 +33,10 @@ public class AdminController : Controller
     {
         var vm = new AdminDashboardViewModel
         {
-            BranchCount   = await _db.Branches.CountAsync(),
-            CourseCount   = await _db.Courses.CountAsync(),
-            StudentCount  = await _db.StudentProfiles.CountAsync(),
-            FacultyCount  = await _db.FacultyProfiles.CountAsync(),
+            BranchCount = await _db.Branches.CountAsync(),
+            CourseCount = await _db.Courses.CountAsync(),
+            StudentCount = await _db.StudentProfiles.CountAsync(),
+            FacultyCount = await _db.FacultyProfiles.CountAsync(),
             EnrolmentCount = await _db.CourseEnrolments.CountAsync(),
             RecentEnrolments = await _db.CourseEnrolments
                 .Include(e => e.StudentProfile)
@@ -197,22 +197,29 @@ public class AdminController : Controller
     public async Task<IActionResult> EditStudent(int id, StudentProfile model)
     {
         if (id != model.Id) return BadRequest();
-        // Preserve Identity user ID – never allow it to be changed via form
-        var existing = await _db.StudentProfiles.AsNoTracking().FirstOrDefaultAsync(s => s.Id == id);
-        if (existing == null) return NotFound();
-        model.IdentityUserId = existing.IdentityUserId;
 
-        // Nav properties are never posted back from a form – clear their
-        // ModelState errors so they don't block a valid save.
+        var existing = await _db.StudentProfiles.FindAsync(id);
+        if (existing == null) return NotFound();
+
+        ModelState.Remove(nameof(StudentProfile.IdentityUserId));
         ModelState.Remove(nameof(StudentProfile.IdentityUser));
+        ModelState.Remove(nameof(StudentProfile.StudentNumber));
+        ModelState.Remove(nameof(StudentProfile.Enrolments));
+        ModelState.Remove(nameof(StudentProfile.AssignmentResults));
+        ModelState.Remove(nameof(StudentProfile.ExamResults));
 
         if (!ModelState.IsValid) return View(model);
-        _db.Update(model);
+
+        existing.Name = model.Name;
+        existing.Email = model.Email;
+        existing.Phone = model.Phone;
+        existing.Address = model.Address;
+        existing.DateOfBirth = model.DateOfBirth;
+
         await _db.SaveChangesAsync();
         TempData["Success"] = "Student profile updated.";
         return RedirectToAction(nameof(Students));
     }
-
     // ═══════════════════════════════════════════════════════════════════════════
     // Faculty management
     // ═══════════════════════════════════════════════════════════════════════════
@@ -241,7 +248,7 @@ public class AdminController : Controller
         // Check for duplicate assignment
         bool exists = await _db.FacultyCourseAssignments
             .AnyAsync(fca => fca.FacultyProfileId == model.FacultyProfileId
-                          && fca.CourseId         == model.CourseId);
+                          && fca.CourseId == model.CourseId);
         if (exists)
         {
             ModelState.AddModelError("", "This faculty member is already assigned to that course.");
@@ -257,6 +264,37 @@ public class AdminController : Controller
         _db.FacultyCourseAssignments.Add(model);
         await _db.SaveChangesAsync();
         TempData["Success"] = "Faculty assigned to course.";
+        return RedirectToAction(nameof(Faculty));
+    }
+
+
+    public async Task<IActionResult> EditFacultyAssignment(int id)
+    {
+        var assignment = await _db.FacultyCourseAssignments
+            .Include(fca => fca.FacultyProfile)
+            .Include(fca => fca.Course)
+            .FirstOrDefaultAsync(fca => fca.Id == id);
+        if (assignment == null) return NotFound();
+        return View(assignment);
+    }
+
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> EditFacultyAssignment(int id, FacultyCourseAssignment model)
+    {
+        if (id != model.Id) return BadRequest();
+
+        var existing = await _db.FacultyCourseAssignments.FindAsync(id);
+        if (existing == null) return NotFound();
+
+        // Only the Role field is editable after assignment
+        ModelState.Remove(nameof(FacultyCourseAssignment.FacultyProfile));
+        ModelState.Remove(nameof(FacultyCourseAssignment.Course));
+
+        if (!ModelState.IsValid) return View(model);
+
+        existing.Role = model.Role;
+        await _db.SaveChangesAsync();
+        TempData["Success"] = "Assignment role updated.";
         return RedirectToAction(nameof(Faculty));
     }
 
@@ -307,7 +345,7 @@ public class AdminController : Controller
 
         bool alreadyEnrolled = await _db.CourseEnrolments
             .AnyAsync(e => e.StudentProfileId == model.StudentProfileId
-                        && e.CourseId         == model.CourseId);
+                        && e.CourseId == model.CourseId);
         if (alreadyEnrolled)
             ModelState.AddModelError("", "This student is already enrolled in that course.");
 
@@ -493,10 +531,10 @@ public class AdminController : Controller
 // ── Admin dashboard view model ────────────────────────────────────────────────
 public class AdminDashboardViewModel
 {
-    public int BranchCount    { get; set; }
-    public int CourseCount    { get; set; }
-    public int StudentCount   { get; set; }
-    public int FacultyCount   { get; set; }
+    public int BranchCount { get; set; }
+    public int CourseCount { get; set; }
+    public int StudentCount { get; set; }
+    public int FacultyCount { get; set; }
     public int EnrolmentCount { get; set; }
     public List<CourseEnrolment> RecentEnrolments { get; set; } = new();
 }
