@@ -1,5 +1,7 @@
 @model IEnumerable<VgcCollege.Web.Models.FacultyProfile>
-@{ ViewData["Title"] = "Faculty"; }
+@{
+    ViewData["Title"] = "Faculty";
+}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-person-badge me-2 text-warning"></i>Faculty</h2>
@@ -21,22 +23,44 @@
             else
             {
                 <table class="table table-sm mb-0">
-                    <thead><tr><th>Course</th><th>Role</th><th></th></tr></thead>
-                    <tbody>
-                    @foreach (var ca in f.CourseAssignments)
-                    {
+                    <thead>
                         <tr>
-                            <td>@ca.Course.Name</td>
-                            <td><span class="badge @(ca.Role=="Tutor"?"bg-warning text-dark":"bg-secondary")">@ca.Role</span></td>
-                            <td>
-                                <form asp-action="RemoveFacultyAssignment" asp-route-id="@ca.Id" method="post"
-                                      onsubmit="return confirm('Remove this assignment?')">
-                                    @Html.AntiForgeryToken()
-                                    <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                                </form>
-                            </td>
+                            <th>Course</th>
+                            <th>Role</th>
+                            <th></th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var ca in f.CourseAssignments)
+                        {
+                            <tr>
+                                <td>@ca.Course.Name</td>
+                                <td><span class="badge @(ca.Role == "Tutor" ? "bg-warning text-dark" : "bg-secondary")">@ca.Role</span>
+                                </td>
+                                <td>
+                                    <form asp-action="RemoveFacultyAssignment" asp-route-id="@ca.Id" method="post"
+                                          onsubmit="return confirm('Remove this assignment?')">
+                                        @Html.AntiForgeryToken()
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-1">
+                                        <a asp-action="EditFacultyAssignment" asp-route-id="@ca.Id"
+                                               class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form asp-action="RemoveFacultyAssignment" asp-route-id="@ca.Id" method="post"
+                                              onsubmit="return confirm('Remove this assignment?')">
+                                            @Html.AntiForgeryToken()
+                                            <button class="btn btn-sm btn-outline-danger">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             }

@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6fd891410305c463817dfbaa40e40211c86349ff")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0057d91fedb663bf1e1256d8206ecf1f2ff928da")]
 [assembly: System.Reflection.AssemblyProductAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VgcCollege.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
