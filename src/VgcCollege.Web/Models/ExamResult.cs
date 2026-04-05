@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace VgcCollege.Web.Models;
 
-/// <summary>
+
 /// The score and grade a student received in an exam.
 /// Visibility is gated by Exam.ResultsReleased – enforced server-side.
-/// </summary>
 public class ExamResult
 {
     public int Id { get; set; }

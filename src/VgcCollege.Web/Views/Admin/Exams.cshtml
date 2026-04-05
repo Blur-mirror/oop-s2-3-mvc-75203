@@ -1,5 +1,7 @@
 @model IEnumerable<VgcCollege.Web.Models.Exam>
-@{ ViewData["Title"] = "Exams & Result Release"; }
+@{
+    ViewData["Title"] = "Exams & Result Release";
+}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2><i class="bi bi-pencil-square me-2 text-warning"></i>Exams &amp; Result Release</h2>
@@ -9,44 +11,59 @@
 <div class="alert alert-info">
     <i class="bi bi-info-circle me-2"></i>
     Use the <strong>Toggle Release</strong> button to control whether students can see their results.
-    Students only see a score when <strong>ResultsReleased = true</strong>.
+    Students only see a score when<strong>the results are released by an admin!</strong>
 </div>
 
 <div class="card shadow-sm">
     <div class="card-body p-0">
         <table class="table table-hover mb-0">
             <thead class="table-dark">
-                <tr><th>Exam</th><th>Course</th><th>Date</th><th>Max</th><th>Results</th><th>Released?</th><th></th></tr>
+                <tr>
+                    <th>Exam</th>
+                    <th>Course</th>
+                    <th>Date</th>
+                    <th>Max</th>
+                    <th>Results</th>
+                    <th>Released?</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            @foreach (var e in Model)
-            {
-                <tr>
-                    <td class="fw-semibold">@e.Title</td>
-                    <td>@e.Course.Name</td>
-                    <td>@e.Date.ToString("dd MMM yyyy")</td>
-                    <td>@e.MaxScore</td>
-                    <td>@e.Results.Count student(s)</td>
-                    <td>
-                        @if (e.ResultsReleased)
-                        { <span class="badge bg-success"><i class="bi bi-unlock me-1"></i>Released</span> }
-                        else
-                        { <span class="badge bg-warning text-dark"><i class="bi bi-lock me-1"></i>Provisional</span> }
-                    </td>
-                    <td>
-                        <div class="d-flex gap-1">
-                            <form asp-action="ToggleExamRelease" asp-route-id="@e.Id" method="post">
-                                @Html.AntiForgeryToken()
-                                <button class="btn btn-sm @(e.ResultsReleased ? "btn-outline-warning" : "btn-outline-success")">
-                                    @(e.ResultsReleased ? "Lock" : "Release")
-                                </button>
-                            </form>
-                            <a asp-action="EditExam" asp-route-id="@e.Id" class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></a>
-                        </div>
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
+                @foreach (var e in Model)
+                {
+                    <tr>
+                        <td class="fw-semibold">@e.Title</td>
+                        <td>@e.Course.Name</td>
+                        <td>@e.Date.ToString("dd MMM yyyy")</td>
+                        <td>@e.MaxScore</td>
+                        <td>@e.Results.Count student(s)</td>
+                        <td>
+                            @if (e.ResultsReleased)
+                            {
+                                <span class="badge bg-success"><i class="bi bi-unlock me-1"></i>Released</span>
+                            }
+                            else
+                            {
+
+                                <span class="badge bg-warning text-dark"><i class="bi bi-lock me-1"></i>Provisional</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="d-flex gap-1">
+                                <form asp-action="ToggleExamRelease" asp-route-id="@e.Id" method="post">
+                                    @Html.AntiForgeryToken()
+                                    <button
+                                        class="btn btn-sm @(e.ResultsReleased ? "btn-outline-warning" : "btn-outline-success")">
+                                        @(e.ResultsReleased ? "Lock" : "Release")
+                                    </button>
+                                </form>
+                                <a asp-action="EditExam" asp-route-id="@e.Id" class="btn btn-sm btn-outline-secondary"><i
+                                    class="bi bi-pencil"></i></a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
