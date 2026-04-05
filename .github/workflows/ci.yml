@@ -2,9 +2,9 @@ name: CI – Build, Test & Coverage
 
 on:
   push:
-    branches: [ "main, feature/*" ]
+    branches: ["main", "feature/*"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 concurrency:
   group: "pages-${{ github.ref }}"
