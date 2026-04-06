@@ -1,66 +1,70 @@
 @model FacultyDashboardViewModel
-@{ ViewData["Title"] = "Faculty Dashboard"; }
+@{
+    ViewData["Title"] = "Dashboard";
+}
 
-<h2 class="mb-4"><i class="bi bi-speedometer2 me-2 text-warning"></i>Welcome, @Model.FacultyProfile.Name</h2>
+<h2 class="mb-4" style="font-size:20px;font-weight:700;">
+    <i class="bi bi-grid-1x2 me-2" style="color:var(--color-accent);"></i>
+    Welcome, @Model.FacultyProfile.Name
+</h2>
 
-<div class="row g-3 mb-4">
-    <div class="col-sm-4">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-primary">@Model.MyCourses.Count</div>
-                <div class="text-muted small"><i class="bi bi-book me-1"></i>My Courses</div>
-                <a asp-action="MyCourses" class="stretched-link"></a>
-            </div>
+<div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap;">
+    <div class="stat-card" style="flex:1;min-width:160px;position:relative;">
+        <div class="stat-icon blue"><i class="bi bi-book"></i></div>
+        <div>
+            <div class="stat-value">@Model.MyCourses.Count</div>
+            <div class="stat-label">My Courses</div>
         </div>
+        <a asp-action="MyCourses" class="stretched-link"></a>
     </div>
-    <div class="col-sm-4">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-success">@Model.MyCourses.Sum(c => c.Enrolments.Count)</div>
-                <div class="text-muted small"><i class="bi bi-people me-1"></i>My Students</div>
-                <a asp-action="MyCourses" class="stretched-link"></a>
-            </div>
+    <div class="stat-card" style="flex:1;min-width:160px;position:relative;">
+        <div class="stat-icon green"><i class="bi bi-people"></i></div>
+        <div>
+            <div class="stat-value">@Model.MyCourses.Sum(c => c.Enrolments.Count)</div>
+            <div class="stat-label">My Students</div>
         </div>
+        <a asp-action="MyCourses" class="stretched-link"></a>
     </div>
-    <div class="col-sm-4">
-        <div class="card text-center border-0 shadow-sm h-100">
-            <div class="card-body">
-                <div class="fs-1 fw-bold text-info">@Model.RecentResults.Count</div>
-                <div class="text-muted small"><i class="bi bi-table me-1"></i>Recent Results</div>
-                <a asp-action="Gradebook" class="stretched-link"></a>
-            </div>
+    <div class="stat-card" style="flex:1;min-width:160px;position:relative;">
+        <div class="stat-icon gold"><i class="bi bi-table"></i></div>
+        <div>
+            <div class="stat-value">@Model.RecentResults.Count</div>
+            <div class="stat-label">Recent Results</div>
         </div>
+        <a asp-action="Gradebook" class="stretched-link"></a>
     </div>
 </div>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header"><i class="bi bi-book me-2"></i>My Courses</div>
-            <ul class="list-group list-group-flush">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div class="card">
+        <div class="card-header"><i class="bi bi-book me-2"></i>My Courses</div>
+        <ul class="list-group list-group-flush">
             @foreach (var c in Model.MyCourses)
             {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>@c.Name <small class="text-muted">(@c.Branch.Name)</small></span>
-                    <a asp-action="CourseStudents" asp-route-courseId="@c.Id" class="btn btn-sm btn-outline-dark">Students</a>
+                <li class="list-group-item">
+                    <div>
+                        <span style="font-weight:500;">@c.Name</span>
+                        <small class="text-muted ms-2">@c.Branch.Name</small>
+                    </div>
+                    <a asp-action="CourseStudents" asp-route-courseId="@c.Id"
+                       class="btn btn-sm btn-outline-secondary">Students</a>
                 </li>
             }
-            </ul>
-        </div>
+        </ul>
     </div>
-    <div class="col-md-6">
-        <div class="card shadow-sm">
-            <div class="card-header"><i class="bi bi-clock-history me-2"></i>Recent Results</div>
-            <ul class="list-group list-group-flush">
+    <div class="card">
+        <div class="card-header"><i class="bi bi-clock-history me-2"></i>Recent Results</div>
+        <ul class="list-group list-group-flush">
             @foreach (var r in Model.RecentResults)
             {
                 <li class="list-group-item">
-                    <span class="fw-semibold">@r.StudentProfile.Name</span>
-                    <small class="text-muted ms-2">@r.Assignment.Title</small>
-                    <span class="float-end badge bg-primary">@r.Score / @r.Assignment.MaxScore</span>
+                    <div>
+                        <span style="font-weight:500;">@r.StudentProfile.Name</span>
+                        <small class="text-muted d-block">@r.Assignment.Title</small>
+                    </div>
+                    <span class="badge bg-primary">@r.Score / @r.Assignment.MaxScore</span>
                 </li>
             }
-            </ul>
-        </div>
+        </ul>
     </div>
 </div>

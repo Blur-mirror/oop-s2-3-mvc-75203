@@ -964,3 +964,21 @@ dl {
 .login-subtitle {
   font-size: 14px;
 }
+/* ── Filter bar spacing ───────────────────────────────────────────────────── */
+.filter-bar {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filter-bar .form-select,
+.filter-bar .form-control {
+  width: auto;
+  min-width: 200px;
+}

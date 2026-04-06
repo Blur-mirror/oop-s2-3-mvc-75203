@@ -156,11 +156,33 @@ public class AdminController : Controller
     [HttpPost, ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteCourse(int id)
     {
-        var course = await _db.Courses.FindAsync(id);
+        var course = await _db.Courses
+            .Include(c => c.Assignments).ThenInclude(a => a.Results)
+            .Include(c => c.Exams).ThenInclude(e => e.Results)
+            .Include(c => c.Enrolments).ThenInclude(e => e.AttendanceRecords)
+            .Include(c => c.FacultyAssignments)
+            .FirstOrDefaultAsync(c => c.Id == id);
+
         if (course == null) return NotFound();
+
+        // Delete leaf nodes first to avoid FK constraint violations in SQLite
+        foreach (var a in course.Assignments)
+            _db.AssignmentResults.RemoveRange(a.Results);
+
+        foreach (var e in course.Exams)
+            _db.ExamResults.RemoveRange(e.Results);
+
+        foreach (var e in course.Enrolments)
+            _db.AttendanceRecords.RemoveRange(e.AttendanceRecords);
+
+        _db.Assignments.RemoveRange(course.Assignments);
+        _db.Exams.RemoveRange(course.Exams);
+        _db.CourseEnrolments.RemoveRange(course.Enrolments);
+        _db.FacultyCourseAssignments.RemoveRange(course.FacultyAssignments);
         _db.Courses.Remove(course);
+
         await _db.SaveChangesAsync();
-        TempData["Success"] = "Course deleted.";
+        TempData["Success"] = $"Course '{course.Name}' and all related data deleted.";
         return RedirectToAction(nameof(Courses));
     }
 
